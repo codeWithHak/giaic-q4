@@ -4,6 +4,12 @@ version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.12"
+
+[project.scripts]
+mistral = "07-hello-litellm.hello:call_mistral"
+
 dependencies = [
+    "google-genai>=1.16.1",
     "litellm>=1.71.1",
+    "python-dotenv>=1.1.0",
 ]
