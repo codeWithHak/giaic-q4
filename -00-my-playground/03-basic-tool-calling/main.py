@@ -71,7 +71,7 @@ client = AsyncOpenAI(
 
 agent = Agent(
     name="Assistant",
-    instructions="You are a helpful assistant",
+    instructions="You are a helpful assistant, if you found any specialised tool for the input please us it otherwise give answer from your own general knowledge.",
     model=OpenAIChatCompletionsModel(model="gemini-2.0-flash", openai_client=client),
     tools=[add, subtract, multiplication, division]
 )
