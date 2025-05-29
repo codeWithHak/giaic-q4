@@ -10,6 +10,7 @@ set_tracing_disabled(disabled=True)
 api_key = os.getenv("API_KEY")
 base_url = os.getenv("BASE_URL")
 model= os.getenv('MODEL')
+
 client = AsyncOpenAI(
     api_key = api_key,
     base_url = base_url
