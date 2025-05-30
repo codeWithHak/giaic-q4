@@ -1,7 +1,7 @@
 from agents import AsyncOpenAI, OpenAIChatCompletionsModel, Agent, Runner, set_tracing_disabled, function_tool
 import os
 from dotenv import load_dotenv
-
+import chainlit as cl
 load_dotenv()
 
 set_tracing_disabled(disabled=True)
@@ -71,16 +71,24 @@ client = AsyncOpenAI(
 
 agent = Agent(
     name="Assistant",
-    instructions="You are a helpful assisant, if you found any specialised tool for the input please us it otherwise give answer from your own general knowledge.",
+    instructions="You are a helpful assisant, if you found any specialised tool for the input please use it otherwise give answer from your own general knowledge.",
     model=OpenAIChatCompletionsModel(model="gemini-2.0-flash", openai_client=client),
     tools=[add, subtract, multiplication, division]
 )
 
-user_input = input("Ask me aything: ")
 
-result = Runner.run_sync(
+@cl.on_chat_start
+async def handle_chat_start():
+    await cl.Message(content="Heyy, I'm a shaitani calculator, Don't trust me!").send()
+@cl.on_message
+async def res(message):
+    result = Runner.run_sync(
     agent,
-    user_input
+    message.content
 )
+    await cl.Message(content=f"{result.final_output}").send()
+    
 
-print(result.final_output)
+    
+    
+    
