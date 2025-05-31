@@ -79,7 +79,7 @@ agent = Agent(
 
 @cl.on_chat_start
 async def handle_chat_start():
-    await cl.Message(content="Heyy, I'm a shaitani calculator, Don't trust me!").send()
+    await cl.Message(content="Ask me about maths but, Don't trust ;)").send()
 @cl.on_message
 async def res(message):
     result = Runner.run_sync(
