@@ -1,19 +1,25 @@
-from litellm import completion
+from agents import Agent, Runner
+from agents.extensions.models.litellm_model import LitellmModel 
 import os
 from dotenv import load_dotenv
 
 load_dotenv()
+
 ## set ENV variables
-os.environ["BASE_URL"] = os.getenv("BASE_URL")
-os.environ["OPENROUTER_API_KEY"] = os.getenv("OPENROUTER_API_KEY")
-def call_mistral():
-    user_input = input("Ask me anything: ")
+API_KEY = os.getenv("API_KEY")
+MODEL = os.getenv("MODEL")
 
-    response = completion(
-      model="openrouter/mistralai/mistral-7b-instruct",
-      messages=[{ "content": user_input,"role": "user"}]
-    )
+agent = Agent(
+    name="Assitant",
+    instructions='You are a helpful assistant that inly reply in roman urdu.',
+    model=LitellmModel(model=MODEL, api_key=API_KEY)
+)
 
-    print(response['choices'][0]['message']['content'])
-    
-call_mistral()
+user_input=input("Ask me anything: ")
+
+result = Runner.run_sync(
+    agent,
+    user_input
+)
+
+print(result.final_output)
