@@ -34,8 +34,9 @@ async def main():
         "hello, create an essay on a rainy day, rainy day means a bad day",
         run_config=run_config
     )
+    
     async for event in result.stream_events():
-        if event.type == "raw_response_event" and isinstance(event.data, ResponseTextDeltaEvent):
+        if event.type == 'raw_response_event' and isinstance(event.data, ResponseTextDeltaEvent):
             print(event.data.delta, end="", flush=True)
         
 asyncio.run(main())
