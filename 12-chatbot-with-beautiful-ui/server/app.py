@@ -6,7 +6,7 @@ from asgiref.wsgi import WsgiToAsgi
 import os
 
 load_dotenv()
- set_tracing_disabled(disabled=True)
+set_tracing_disabled(disabled=True)
 
 client = AsyncOpenAI(
     api_key=os.getenv("API_KEY"),

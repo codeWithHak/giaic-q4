@@ -383,7 +383,7 @@ function App() {
   }
 
   const quickActions = [
-    { label: "Generate Code", icon: Code, prompt: "Help me generate " },
+    { label: "Generate Code", icon: Code, prompt: "Help me generate code " },
     { label: "Have Fun", icon: Smile, prompt: "Tell me a joke about " },
     { label: "Mental Health", icon: Heart, prompt: "I want to talk about " },
   ]
