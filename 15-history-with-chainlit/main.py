@@ -24,6 +24,10 @@ agent = Agent(
     model= OpenAIChatCompletionsModel(model=MODEL, openai_client=external_client)
 )
 
+@cl.on_chat_start
+async def handle_chat_start():
+    await cl.Message(content="Hello I'm Huzair, How can I help you today?").send()
+
 @cl.on_message
 async def handle_message(message):
     result = await Runner.run(starting_agent=agent, input=message.content)
