@@ -1,3 +1,4 @@
+#type:ignore
 from agents import AsyncOpenAI, Runner, OpenAIChatCompletionsModel, Agent, set_tracing_disabled
 from dotenv import load_dotenv
 import os
