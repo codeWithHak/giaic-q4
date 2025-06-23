@@ -1,4 +1,6 @@
+#type:ignore
 from agents import Agent, Runner, AsyncOpenAI, OpenAIChatCompletionsModel, set_tracing_disabled
+from openai.types.responses import ResponseTextDeltaEvent
 import os
 from dotenv import load_dotenv
 import asyncio
@@ -21,12 +23,19 @@ agent = Agent(
     instructions="You are a helpful assistant",
     model=OpenAIChatCompletionsModel(model=MODEL, openai_client=external_client)
 )
-
-async def main():
-    result = await Runner.run(starting_agent=agent, input="Helloo")
-    print(result.final_output)
     
-if __name__ == "__main__":
-    asyncio.run(main())
+@cl.on_chat_start
+async def handle_chat_start():
+    await cl.Message(content="Hello, How may I help you?").send()
     
-
+    
+@cl.on_message
+async def handle_message(message):
+    response_text = cl.Message(content=" ")
+    await response_text.send()
+    
+    result = Runner.run_streamed(starting_agent=agent, input=message.content)
+    
+    async for event in result.stream_events():
+        if event.type == "raw_response_event" and isinstance(event.data, ResponseTextDeltaEvent):
+            await response_text.stream_token(event.data.delta)
