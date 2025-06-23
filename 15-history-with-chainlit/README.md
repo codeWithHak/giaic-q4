@@ -1,72 +1,53 @@
-# 🧠 Understand the *Why* Behind Every Line – History-Based Chat with Chainlit + OpenAI
+# Understand the Why Behind Every Line – History-Based Chatbot with Chainlit and OpenAI Agents SDK
 
-This is a small but powerful project that shows how to use **Chainlit** and **OpenAI agents** to create a chatbot that **remembers previous messages** in a `history`.
+This project demonstrates how to use Chainlit with OpenAI Agents SDK to build a chatbot that maintains conversation history. It ensures each user message and AI response is stored, so the assistant can respond with context.
 
-### 👋 What does this project do?
+## What this project does
 
-Every time you send a message, the bot:
-1. **Remembers** what you said.
-2. **Generates a smart reply** using OpenAI's API.
-3. **Saves** that reply too.
-4. So the next time you chat, the AI has full **context**!
+Each time the user sends a message:
+1. The message is added to a session-based history.
+2. The entire history is sent to the agent.
+3. The agent’s reply is added to the same history.
+4. Both user and assistant messages are saved in the session.
 
----
-
-## ❓ Questions I had (that you might too!)
+## Questions and Doubts Answered
 
 ### 1. What is `cl.user_session.get()` and `cl.user_session.set()`?
-These are **Chainlit’s methods** to **get and save data** during a user’s session.
 
-- `get("history")` → Get saved list of messages.
-- `set("history", history)` → Save the updated list.
+These are Chainlit methods used to handle session data:
 
-> 🧠 Think of `cl.user_session` like a dictionary — you store data using a key (`"history"`) and a value (the list of messages).
+- `get("history")` retrieves the current session's message history.
+- `set("history", history)` saves or updates the message history.
 
----
+Chainlit internally treats this like a key-value store, similar to a Python dictionary.
 
-### 2. Why do we need to use `.set()` after appending to the list?
-Even though we changed the list with `append()`, **Chainlit won’t automatically know** it’s changed. So we must **explicitly save it again** with `set()`.
+### 2. Why is `set()` used after `append()`?
 
-> ✅ Yes, `.set()` replaces the old value with the new one — just like updating a Python dictionary.
+Even though `append()` modifies the list in Python, Chainlit does not automatically detect changes in session data. You must explicitly call `set()` to tell Chainlit to save the updated list in the session.
 
----
+### 3. Is `set()` a built-in Python method?
 
-### 3. Is `.set()` a Python method or Chainlit's?
-`cl.user_session.set()` is **Chainlit’s method** — not Python’s.  
-It is made specifically to handle session data **on the server** (not in the browser like `localStorage`).
+No. `cl.user_session.set()` is provided by Chainlit. It is not the same as Python’s `set()` type. This method is specific to Chainlit's session handling.
 
----
+### 4. Is session data stored in the browser?
 
-### 4. Where is this session stored? Browser or backend?
-**Chainlit stores the session on the server side** — not in the browser.  
-It's temporary and resets when the tab is closed (unless persisted manually).
+No. Chainlit stores session data on the server side. It is temporary and tied to the current user session. When the session ends (e.g., browser tab closes), the data is lost unless custom persistence is implemented.
 
----
+## Code Summary
 
-## 📦 Code Flow Summary
-
-You don’t need the full code — here’s what happens in simple steps:
+The key logic behind the project:
 
 ```python
 @cl.on_chat_start
-# Step 1: Start a new session
 cl.user_session.set("history", [])
 
 @cl.on_message
-# Step 2: Get previous chat history
 history = cl.user_session.get("history")
-
-# Step 3: Add user's new message
 history.append({"role": "user", "content": message.content})
 
-# Step 4: Pass entire history to the AI
 result = await Runner.run(starting_agent=agent, input=history)
 
-# Step 5: Save AI's response
 history.append({"role": "assistant", "content": result.final_output})
-
-# Step 6: Save updated history back into session
 cl.user_session.set("history", history)
 
-# Step 7: Send AI's reply back to user
 await cl.Message(content=result.final_output).send()
