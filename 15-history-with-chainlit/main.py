@@ -4,7 +4,7 @@ from agents import Agent, Runner, AsyncOpenAI, OpenAIChatCompletionsModel, set_t
 from dotenv import load_dotenv
 import os
 import chainlit as cl
-import asyncio
+# import asyncio
  
 load_dotenv()
 set_tracing_disabled(disabled=True)
@@ -26,21 +26,21 @@ agent = Agent(
 
 @cl.on_chat_start
 async def handle_chat_start():
-    cl.user_session.set(key="history", value=[])
-    await cl.Message(content="Hello I'm Huzair, How can I help you today?").send()
-
+    cl.user_session.set(key="empty_history", value=[])
+    await cl.Message(content="Hello, How may I help you today!").send()
+    
 @cl.on_message
 async def handle_message(message):
-    history = cl.user_session.get("history")
-    
+    history = cl.user_session.get("empty_history")
     history.append({"role":"user", "content":message.content})
     
     result = await Runner.run(starting_agent=agent, input=history)
     
-    history.append({"role": "assistant", "content": result.final_output})
-    cl.user_session.set("history", history)
-    
+    history.append({"role":"assistant", "content":result.final_output})
+    cl.user_session.set("empty_history",history)
+
     message = cl.Message(content=result.final_output)
-    
     await message.send()
+
+
 
