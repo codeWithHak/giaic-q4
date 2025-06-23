@@ -1,6 +1,7 @@
-def main():
-    print("Hello from 03-hello-chainlit!")
+import chainlit as cl
 
-
-if __name__ == "__main__":
-    main()
+@cl.on_message
+async def res(message:cl.Message):
+    await cl.Message(
+        content=f"Recieved {message.content}"
+    ).send()
