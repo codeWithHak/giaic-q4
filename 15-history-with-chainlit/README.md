@@ -1,4 +1,6 @@
-# Understand the Why Behind Every Line – History-Based Chatbot with Chainlit and OpenAI Agents SDK
+# Understand the Why Behind Every Line Of Code!
+
+## History Based Chatbot with Chainlit and OpenAI Agents SDK
 
 This project demonstrates how to use Chainlit with OpenAI Agents SDK to build a chatbot that maintains conversation history. It ensures each user message and AI response is stored, so the assistant can respond with context.
 
