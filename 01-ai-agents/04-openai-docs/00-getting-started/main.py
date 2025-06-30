@@ -1,6 +1,7 @@
 from agents import Agent, OpenAIChatCompletionsModel, AsyncOpenAI, Runner, set_tracing_disabled
 from dotenv import load_dotenv
 import os
+import asyncio
 
 load_dotenv()
 set_tracing_disabled(disabled=True)
@@ -35,6 +36,10 @@ triage_agent = Agent(
     handoffs=[math_tutor_agent,history_tutor_agent]
 )
 
-res = Runner.run_sync(starting_agent=triage_agent, input="What is the capital of france?")
 
-print(res.final_output)
+async def main():
+    result = await Runner.run(starting_agent=triage_agent, input="Explain lcm")
+    print(result.final_output)
+    
+if __name__ == "__main__":
+    asyncio.run(main())
