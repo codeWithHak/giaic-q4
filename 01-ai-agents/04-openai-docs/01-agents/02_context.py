@@ -22,9 +22,10 @@ class UserInfo:
     name:str
     age:int
 
+
 @function_tool
 async def fetch_user_details(wrapper:RunContextWrapper[UserInfo]) -> str:
-    """Returns the name and age of the user"""
+    """Returns user name and age"""
     return f"Name:{wrapper.context.name}, Age:{wrapper.context.age}"
 
 user_info = UserInfo(name="Huzair", age=19)
