@@ -28,18 +28,24 @@ class Develpoer(BaseModel):
     is_technical_person: bool
     reason:str
     
+class CalendarEvent(BaseModel):
+    name: str|list[str]
+    date: str|list[str]
+    participants: str|list[str]
+    
     
 agent = Agent(
     name="Tournament Marketing Agent",
-    instructions="You can extract out from the statement that wether the person talking is technical or not and wether the statement is coding related or not",
+    # instructions="You can extract out from the statement that wether the person talking is technical or not and wether the statement is coding related or not",
+    instructions="Extract calender events from text",
     model=OpenAIChatCompletionsModel(model="gemini-2.5-flash", openai_client=client),
-    output_type=AgentOutputSchema(output_type=Develpoer, strict_json_schema=True)
+    output_type=AgentOutputSchema(output_type=CalendarEvent)
     
 )
 
 
 async def main():
-    result = await Runner.run(starting_agent=agent, input="How many types of datatypes are there in python?")
+    result = await Runner.run(starting_agent=agent, input="Baqra Eid was on 12 july 2025, and ramzan will be starting from feb 22 2026")
     print(result.final_output)
     
 asyncio.run(main())
