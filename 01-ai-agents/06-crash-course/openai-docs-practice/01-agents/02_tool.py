@@ -13,11 +13,16 @@ WEATHER_API_KEY = os.getenv("WEATHER_API_KEY")
 @function_tool()
 def get_weather(city:str) -> str:
     
-    """Takes city as an argument
+    """
+    Get the current weather for a specific city using the WeatherAPI.
     
-    Args(str):city
+    
+    Args:
+    
+        city (str): Name of the specific city to fetch weather for.
   
-    returns weather of that city by calling api   
+    Returns: 
+        str: A string containing the Weather data returned from the WeatherAPI.     
     """
     response = requests.get(f"http://api.weatherapi.com/v1/current.json?key={WEATHER_API_KEY}&q={city}&aqi=no")
     api_result = response.json()
