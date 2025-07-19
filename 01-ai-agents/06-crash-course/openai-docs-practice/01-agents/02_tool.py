@@ -2,13 +2,13 @@ from agents import Agent, Runner, enable_verbose_stdout_logging, set_default_ope
 from dotenv import load_dotenv
 import os
 import requests
-
+from rich import print
 
 enable_verbose_stdout_logging()
 set_default_openai_api("chat_completions")
 
 load_dotenv()
-
+WEATHER_API_KEY = os.getenv("WEATHER_API_KEY")
 
 @function_tool()
 def get_weather(city:str) -> str:
@@ -17,14 +17,14 @@ def get_weather(city:str) -> str:
     
     Args(str):city
   
-    returns weather of that city  
+    returns weather of that city by calling api   
     """
-    response = requests.get("")
+    response = requests.get(f"http://api.weatherapi.com/v1/current.json?key={WEATHER_API_KEY}&q={city}&aqi=no")
+    api_result = response.json()
     
-    "Read Docs: https://www.weatherapi.com/docs/"
-    "WEATHER_API_KEY=a2dc1d4874ab437189543444251707"
+    
         
-    return f"The weather in {city} is sunny"
+    return f"API CALL RESULT: {api_result}"
 
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 
