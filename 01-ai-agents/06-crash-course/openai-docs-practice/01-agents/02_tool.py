@@ -10,7 +10,7 @@ set_default_openai_api("chat_completions")
 load_dotenv()
 WEATHER_API_KEY = os.getenv("WEATHER_API_KEY")
 
-@function_tool()
+@function_tool
 def get_weather(city:str) -> str:
     
     """
