@@ -1,11 +1,10 @@
-from agents import Agent, Runner, function_tool, enable_verbose_stdout_logging, set_default_openai_api, AsyncOpenAI,OpenAIChatCompletionsModel
-from rich import print
+from agents import Agent, Runner, function_tool, enable_verbose_stdout_logging, set_default_openai_api, OpenAIChatCompletionsModel, AsyncOpenAI
 import sqlite3
 import os
 from dotenv import load_dotenv
 from pydantic import BaseModel
 
-# set_default_openai_api("chat_completions")
+set_default_openai_api("chat_completions")
 
 
 load_dotenv()
@@ -22,7 +21,7 @@ class Row(BaseModel):
 
 
 @function_tool
-def get_data_from_db(offset:int=0, limit:int=20) -> list[str]:
+def get_data_from_db(offset:int=0, limit:int=15) -> list[str]:
     """fetch 20,20 mails from db in and give it to summarize_mail tool"""
 
     connection = sqlite3.connect(r"D:\huzair\coding\email-automation-system\mails.db")
@@ -38,27 +37,32 @@ def get_data_from_db(offset:int=0, limit:int=20) -> list[str]:
 
 @function_tool
 def summarize_mail(mails:list[str], prev_summary:str = '') -> str:
-    """Create a one line summary for all mails recieved in {mails}"""
+    """Create a one line summary for all mails recieved in {mails} and save in a file named mails_summary.json"""
     
+
     return f"Summarized {len(mails)} and appended into prev summary"
 
 
 
 db_analyzer = Agent(name="Email Analyzer Agent",
-                    instructions="""Your job is to:
-1. Call `get_data_from_db` starting with offset=0 and limit=20.
-2. Use `summarize_mail` to keep building a full summary using the returned emails.
-3. Repeat until no more emails are left (less than 20 returned).
-4. Then answer the user's question using the full summary.
-""",
+                    instructions="""
+Call get_data_from_db(offset=0, limit=15).
+
+Pass those mails into summarize_mail.
+
+If you received exactly 15 mails, increment your offset by 15 and repeat steps 1–3.
+
+Otherwise, you’ve reached the end—call summarize_mail one last time (if needed) and then answer the user’s question, reporting the total mails you’ve read.
+                 """,                
                     tools=[get_data_from_db, summarize_mail],
-                    model=OpenAIChatCompletionsModel(
-                        model="gpt-4.1",
+                    model = OpenAIChatCompletionsModel(
+                        model="gpt-4-turbo",
                         openai_client=AsyncOpenAI()
                         )
+                        
                     )
 
-result = Runner.run_sync(starting_agent=db_analyzer, input="Does this goes to webinars?")
+result = Runner.run_sync(starting_agent=db_analyzer, input="What's the name of the user?")
 
 print(result.final_output)
 
