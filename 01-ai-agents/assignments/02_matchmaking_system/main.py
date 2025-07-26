@@ -3,9 +3,6 @@ from dotenv import load_dotenv
 import os 
 from dataclasses import dataclass
 load_dotenv()
-OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
-
-
 @dataclass
 class User:
     name:str
