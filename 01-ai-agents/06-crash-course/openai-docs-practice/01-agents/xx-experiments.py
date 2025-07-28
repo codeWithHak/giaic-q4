@@ -12,16 +12,16 @@ load_dotenv()
 GEMINI_API_KEY=os.getenv("GEMINI_API_KEY")
 
 
+def create_embeddings(text:str):
+    client = genai.Client()
 
-
-client = genai.Client()
-
-result = client.models.embed_content(
+    result = client.models.embed_content(
         model="gemini-embedding-001",
-        contents="What is the meaning of life?")
+        contents=text)
 
-print(result.embeddings)
+    print(result.embeddings)
 
+create_embeddings("Haan meri jaan")
 
 
 
