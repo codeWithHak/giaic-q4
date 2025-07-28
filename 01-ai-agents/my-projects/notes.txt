@@ -7,8 +7,3 @@ Aik tool data fetch karega aik saath or wo data loop me return karega or wo loop
 doosrey tool ko jaengi wo un 20 mails ki summary banaega or apney paas store karlega ab dobara pehla tool (jisme loop chal raha tha wo) 20 or mails return karega
 phir dobara doosra agent summary me wo new 20 mails ki summary banakar purani summary me append karlega
 aese hota rahega aik tool 20, 20 karke mails return karega loop me or doosra summary banata jaega or jab user query karega to agent summary dekh ke answer dedega 
-
-
-vs_688767ddefb88191a3601c2f1236ac4c
-
-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
