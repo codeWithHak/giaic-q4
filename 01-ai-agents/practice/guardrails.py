@@ -1,7 +1,8 @@
-from agents import Agent, Runner, enable_verbose_stdout_logging, AsyncOpenAI, OpenAIChatCompletionsModel
+from agents import Agent, Runner, enable_verbose_stdout_logging, AsyncOpenAI, OpenAIChatCompletionsModel, set_tracing_disabled
 from dotenv import load_dotenv
 import os
 
+set_tracing_disabled(disabled=False)
 enable_verbose_stdout_logging()
 
 load_dotenv()
