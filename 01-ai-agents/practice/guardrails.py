@@ -1,6 +1,17 @@
-from agents import Agent, Runner, enable_verbose_stdout_logging, AsyncOpenAI, OpenAIChatCompletionsModel, set_tracing_disabled
+from agents import (
+    Agent,
+    Runner,
+    enable_verbose_stdout_logging,
+    AsyncOpenAI,
+    OpenAIChatCompletionsModel,
+    set_tracing_disabled,
+    GuardrailFunctionOutput,
+    )
+
+
 from dotenv import load_dotenv
 import os
+from pydantic import BaseModel
 
 set_tracing_disabled(disabled=False)
 enable_verbose_stdout_logging()
@@ -15,6 +26,16 @@ external_client = AsyncOpenAI(
     base_url="https://generativelanguage.googleapis.com/v1beta/openai"
 )
 
+
+class MathHomeWorkOutput(BaseModel):
+    is_math_homework:bool
+    reasoning:str
+
+guardrail_agent = Agent(
+    name="Guardrail Agent",
+    instructions="Check if user is asking about math homework",
+    output_type=MathHomeWorkOutput
+)
 
 agent = Agent(
     name="Assistant",

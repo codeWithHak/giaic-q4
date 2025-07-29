@@ -9,6 +9,7 @@ load_dotenv()
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 
 
+
 external_client = AsyncOpenAI(
     api_key=GEMINI_API_KEY,
     base_url="https://generativelanguage.googleapis.com/v1beta/openai"
@@ -22,5 +23,5 @@ agent = Agent(
 
 )
 
-result = Runner.run_sync(starting_agent=agent, input="Hello")
+result = Runner.run_sync(starting_agent=agent, input="who is the president of pk")
 print(result.final_output)
