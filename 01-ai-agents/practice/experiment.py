@@ -8,7 +8,7 @@ from agents import (
     input_guardrail,
     set_tracing_disabled,
     AsyncOpenAI,
-    OpenAIChatCompletionsModel
+    OpenAIChatCompletionsModel,
 
 )
 
@@ -46,7 +46,7 @@ guardrail_agent = Agent(
 
 
 @input_guardrail
-async def math_guardrail(agent, input):
+async def math_guardrail(ctx,agent, input):
     result = await Runner.run(guardrail_agent, input)
 
     return GuardrailFunctionOutput(
