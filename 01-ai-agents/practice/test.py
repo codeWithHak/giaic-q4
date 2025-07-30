@@ -8,7 +8,7 @@ for name in names:
     else:
         names_count[name] = 1
         names_count[name] = {}
-        
+
 for n in names_count:
     for char in n:
         if char not in names_count[n]: 
@@ -18,5 +18,3 @@ for n in names_count:
 
 print(names_count)
 
-
-# 
