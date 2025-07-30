@@ -25,9 +25,6 @@ result = Runner.run_sync(starting_agent=agent, input="Test prompt")
 # print("result:",result)
 print("result:",result)
 
-for i,arr in enumerate(result[0]):
-    print(f"\n{i}: {arr}")
-
 # print("result.new_items:",result.new_items[0].agent.instructions)
 
 # print("result.input:",result.input)
