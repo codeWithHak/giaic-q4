@@ -4,7 +4,6 @@ import os
 from rich import print
 import asyncio
 from openai.types.responses import ResponseTextDeltaEvent
-from agents.result import RunResultStreaming
 set_tracing_disabled(disabled=True)
 load_dotenv()
 
@@ -24,10 +23,10 @@ agent = Agent(
 )
 
 async def main():
-    result = Runner.run_streamed(starting_agent=agent, input="Write an essay on allama iqbal the poet")
-    async for event in result.stream_events():
-        if event.type == "raw_response_event" and isinstance(event.data, ResponseTextDeltaEvent):
-            print(event.data.delta)
-    
+    result = await Runner.run(starting_agent=agent, input="Write an essay on allama iqbal the poet")
+    print("RESULT")
+    print(result)
+    print("DIR(RESULT)")
+    print(dir(result))
 
 asyncio.run(main())
