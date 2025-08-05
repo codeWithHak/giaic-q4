@@ -21,13 +21,14 @@ agent = Agent(
     name="assistant",
     instructions="You are a helpful assistant",
     model=OpenAIChatCompletionsModel(model="gemini-2.5-flash", openai_client=external_client),
+    handoff_description=
 )
 
 async def main():
     result = Runner.run_streamed(starting_agent=agent, input="Write an essay on allama iqbal the poet")
     async for event in result.stream_events():
         if event.type == "raw_response_event" and isinstance(event.data, ResponseTextDeltaEvent):
-            print(event.data.delta)
+            print(event.data.delta, end="", flush=True)
     
 
 asyncio.run(main())

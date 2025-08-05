@@ -16,8 +16,7 @@ external_client = AsyncOpenAI(
 agent = Agent(
     name="assistant",
     instructions="You are a helpful assistant",
-    model=OpenAIChatCompletionsModel(model="gemini-2.5-flash", openai_client=external_client),
-    prompt=
+    model=OpenAIChatCompletionsModel(model="gemini-2.5-flash", openai_client=external_client)
 )
 
 result = Runner.run_sync(starting_agent=agent, input="hello")
