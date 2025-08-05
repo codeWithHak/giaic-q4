@@ -48,7 +48,8 @@ agent = Agent(
             tool_description_override="This tool handles all the queries related to physics",
             is_enabled=check_memebership
             )
-    ]
+    ],
+    
 )
 
 user_input = input("Ask me anything: ")
