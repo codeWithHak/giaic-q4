@@ -8,6 +8,12 @@ load_dotenv()
 
 enable_verbose_stdout_logging()
 
+balance = 11
+
+def check_memebership(ctx,agent):
+    return True if balance > 10 else False
+
+
 external_client = AsyncOpenAI(
     api_key=os.getenv("GEMINI_API_KEY"),
     base_url=os.getenv("BASE_URL")
@@ -39,7 +45,8 @@ agent = Agent(
         handoff(
             agent=physics_agent,
             tool_name_override="Physics_Agent",
-            tool_description_override="This tool handles all the queries related to physics"
+            tool_description_override="This tool handles all the queries related to physics",
+            is_enabled=check_memebership
             )
     ]
 )
