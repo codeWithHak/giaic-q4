@@ -19,9 +19,6 @@ agent = Agent(
     model=OpenAIChatCompletionsModel(model="gemini-2.5-flash", openai_client=external_client)
 )
 
-result = Runner.run_sync(starting_agent=agent, input="Test prompt")
-# print(result.raw_responses[0].output[0].content[0].text)
-# print(result.raw_item.content[0].text)
-# print("result:",result)
+result = Runner.run_sync(starting_agent=agent, input="What is ai")
+
 print("result:",result.final_output)
-print("result.input:",result.input)
