@@ -6,6 +6,8 @@ from rich import print
 set_tracing_disabled(disabled=True)
 load_dotenv()
 
+
+
 enable_verbose_stdout_logging()
 
 external_client = AsyncOpenAI(
@@ -17,6 +19,7 @@ agent = Agent(
     name="assistant",
     instructions="You are a helpful assistant",
     model=OpenAIChatCompletionsModel(model="gemini-2.5-flash", openai_client=external_client)
+    
 )
 
 result = Runner.run_sync(starting_agent=agent, input="What is ai")
