@@ -1,4 +1,4 @@
-from agents import AsyncOpenAI, OpenAIChatCompletionsModel, Agent, Runner, set_tracing_disabled,enable_verbose_stdout_logging, function_tool
+from agents import AsyncOpenAI, OpenAIChatCompletionsModel, Agent, Runner, set_tracing_disabled,enable_verbose_stdout_logging, function_tool, ModelSettings
 from agents.agent import StopAtTools
 from dotenv import load_dotenv
 import os
@@ -12,20 +12,9 @@ load_dotenv()
 enable_verbose_stdout_logging()
 
 @function_tool
-def get_weather(city:str) -> str:
-    return f"The weather in {city} is suiiiiny."
+def get_karachi_info(city:str) -> str:
+    return f"{city} Khatrey me he bawaa"
 
-# @function_tool
-# def get_info(city:str) -> str:
-#     return f"The info is that {city} is in danger"
-
-# @function_tool
-# def famous_dish(city:str) -> str:
-#     return f"Biryani is famous in {city} "
-
-# @function_tool
-# def country_capital(country:str) -> str:
-#     return f"The capital of {country} is Karachi"
 
 external_client = AsyncOpenAI(
     api_key=os.getenv("GEMINI_API_KEY"),
@@ -37,9 +26,10 @@ agent = Agent(
     instructions="You are a helpful assistant",
     model=OpenAIChatCompletionsModel(model="gemini-2.5-flash", openai_client=external_client),
     # tools=[get_weather,get_info,famous_dish, country_capital],
-    tools=[get_weather],
+    tools=[get_karachi_info],
+    model_settings=ModelSettings(tool_choice="auto")
 )
 
-result = Runner.run_sync(starting_agent=agent, input="What's the weather in karachi and provide some info about karachi. And what is the most famous dish in Karachi. And what is the capital of Pakistan.")
+result = Runner.run_sync(starting_agent=agent, input="Provide some info about astronauts.")
 
 print("result:",result.final_output)
