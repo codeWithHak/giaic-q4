@@ -35,7 +35,7 @@ external_client = AsyncOpenAI(
 agent = Agent(
     name="assistant",
     instructions="You are a helpful assistant",
-    model=OpenAIChatCompletionsModel(model="gemini-2.0-flash", openai_client=external_client),
+    model=OpenAIChatCompletionsModel(model="gemini-2.5-flash", openai_client=external_client),
     # tools=[get_weather,get_info,famous_dish, country_capital],
     tools=[get_weather],
 )
