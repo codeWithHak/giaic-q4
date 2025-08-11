@@ -1,20 +1,25 @@
-from agents import AsyncOpenAI, OpenAIChatCompletionsModel, Agent, Runner, set_tracing_disabled,enable_verbose_stdout_logging
+from agents import AsyncOpenAI, OpenAIChatCompletionsModel, Agent, Runner, set_tracing_disabled,enable_verbose_stdout_logging, RunContextWrapper
 from dotenv import load_dotenv
 import os
 from rich import print
+from dataclasses import dataclass
 
 set_tracing_disabled(disabled=True)
 load_dotenv()
 
 
-
 enable_verbose_stdout_logging()
 
 
-def get_dynamic_prompt(ctx,agent) -> str:
+@dataclass
+class User:
+    name:str
+
+
+def get_dynamic_prompt(ctx:RunContextWrapper[User], agent:Agent[User]) -> str:
     print("\n[CTX]",ctx)
     print("\n[AGENT]",agent)
-    return "You are an amazing and friendly assistand that helps user in their quries in a friendly way!"
+    return f"You are an amazing and friendly assistant and your name is {ctx.context.name} that helps user in their quries in a friendly way!"
 
 external_client = AsyncOpenAI(
     api_key=os.getenv("GEMINI_API_KEY"),
@@ -28,6 +33,16 @@ agent = Agent(
     
 )
 
-result = Runner.run_sync(starting_agent=agent, input="Yeahhh budyyyy light weight babyyyyy!!!!")
+user_info = User(name="Shapatar Assistant")
 
+result = Runner.run_sync(starting_agent=agent, input="What's your name", context=user_info)
+
+
+print("\n[RUNNER.RUN_SYNC]")
+print(Runner.run_sync)
+
+print('\n[RESULT]')
+print(result)
+
+print("\n[RESULT.FINAL_OUTPUT]")
 print("result:",result.final_output)
