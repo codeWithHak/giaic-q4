@@ -1,4 +1,4 @@
-from agents import Agent, Runner,enable_verbose_stdout_logging, RunHooks, function_tool, ModelSettings
+from agents import Agent, Runner,enable_verbose_stdout_logging, AgentHooks, function_tool, ModelSettings
 from dotenv import load_dotenv
 from rich import print
 
@@ -45,9 +45,9 @@ enable_verbose_stdout_logging()
 def get_weather (city:str) -> str:
     return f"The weather in {city} is sunny"
 
-class TestRunHooks(RunHooks):
+class TestAgentHooks(AgentHooks):
 
-    async def on_agent_start(self,context,agent):
+    async def on_start(self,context,agent):
         print(f"\n[ON_AGENT_START]")
         
         # print('\n[ON_AGENT_START_SELF]')
@@ -60,7 +60,7 @@ class TestRunHooks(RunHooks):
         # print(agent)
 
 
-    async def on_agent_end(self,context,agent,output):
+    async def on_end(self,context,agent,output):
         print(f"\n[ON_AGENT_END]")
 
         # print('\n[ON_AGENT_END_SELF]')
@@ -76,9 +76,14 @@ class TestRunHooks(RunHooks):
         # print(output)
 
 
-    async def on_handoff(self,context,from_agent,to_agent):
+    async def on_handoff(self,context,agent,source):
 
         print('\n[ON_HANDOFF]')
+        print('\n[ON_HANDOFF_SOURCE]')
+        print(source)
+        print('\n[ON_HANDOFF_AGENT]')
+        print(agent)
+
 
         # print('\n[ON_HANDOFF_SELF]')
         # print(self)
@@ -119,7 +124,8 @@ class TestRunHooks(RunHooks):
 info_agent = Agent(
     name="Info Agent",
     instructions="You are an information agent you have info of all cities.",
-    model='gpt-4o-mini'
+    model='gpt-4o-mini',
+    hooks=TestAgentHooks()
 )
 
 
@@ -131,7 +137,8 @@ agent = Agent(
     handoffs=[info_agent],
     model_settings=ModelSettings(
         tool_choice="required"
-    )
+    ),
+    hooks=TestAgentHooks()
 )
 
 
@@ -139,7 +146,7 @@ agent = Agent(
 result = Runner.run_sync(
     starting_agent=agent,
     input="give me some info about spain",
-    hooks=TestRunHooks()
+    
     )
 
 print("result:",result.final_output)
