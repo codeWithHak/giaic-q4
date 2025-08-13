@@ -10,6 +10,7 @@ enable_verbose_stdout_logging()
 agent = Agent(
     name="assistant",
     instructions="You are a helpful assistant",
+    model="gpt-4o-mini"
 )
 
 result = Runner.run_sync(starting_agent=agent, input="What is ai")
